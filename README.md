@@ -1,6 +1,6 @@
 # sticky_infinite_list_example
 
-Example for sticky infinite list package
+Example for sticky [infinite list package](https://github.com/TatsuUkraine/flutter_sticky_infinite_list)
 
 ## Getting Started
 
