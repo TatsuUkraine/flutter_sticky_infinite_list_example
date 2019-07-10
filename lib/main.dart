@@ -120,6 +120,27 @@ class _MyHomePageState extends State<MyHomePage> {
                           },
                         ),
                       ),
+                      ListTile(
+                        title: Text("Header alignment"),
+                        trailing: DropdownButton<HeaderAlignment>(
+                          value: _settings.alignment,
+                          items: [
+                            DropdownMenuItem(
+                              child: Text("Top left"),
+                              value: HeaderAlignment.topLeft,
+                            ),
+                            DropdownMenuItem(
+                              child: Text("Top right"),
+                              value: HeaderAlignment.topRight,
+                            ),
+                          ],
+                          onChanged: (value) {
+                            setState(() {
+                              _settings.alignment = value;
+                            });
+                          },
+                        ),
+                      ),
                       Center(
                         child: RaisedButton(
                             child: Text("Scroll to center"),
@@ -183,6 +204,7 @@ class ScrollWidget extends StatelessWidget {
       );
 
       return InfiniteListItem(
+        headerAlignment: settings.alignment,
         headerStateBuilder: (context, state) {
           return Container(
             decoration: BoxDecoration(
@@ -221,11 +243,7 @@ class ScrollWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
             color: Colors.blueAccent,
           ),
-          margin: EdgeInsets.only(
-            left: 90,
-            bottom: 10,
-            right: 10,
-          ),
+          margin: settings.contentMargin,
           padding: EdgeInsets.all(8),
           height: 300,
           width: double.infinity,
@@ -248,10 +266,28 @@ class Settings {
   int minCount;
   int maxCount;
   bool multiDirection;
+  HeaderAlignment alignment;
+
+  EdgeInsets get contentMargin {
+    if (this.alignment == HeaderAlignment.topRight) {
+      return EdgeInsets.only(
+        left: 10,
+        bottom: 10,
+        right: 90,
+      );
+    }
+
+    return EdgeInsets.only(
+      left: 90,
+      bottom: 10,
+      right: 10,
+    );
+  }
 
   Settings({
     this.minCount,
     this.maxCount,
+    this.alignment = HeaderAlignment.topLeft,
     this.multiDirection = false,
   });
 }
