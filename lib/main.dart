@@ -133,6 +133,14 @@ class _MyHomePageState extends State<MyHomePage> {
                               child: Text("Top right"),
                               value: HeaderAlignment.topRight,
                             ),
+                            DropdownMenuItem(
+                              child: Text("Bottom left"),
+                              value: HeaderAlignment.bottomLeft,
+                            ),
+                            DropdownMenuItem(
+                              child: Text("Bottom right"),
+                              value: HeaderAlignment.bottomRight,
+                            ),
                           ],
                           onChanged: (value) {
                             setState(() {
@@ -213,7 +221,7 @@ class ScrollWidget extends StatelessWidget {
             ),
             height: 70,
             width: 70,
-            margin: EdgeInsets.symmetric(horizontal: 10),
+            margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -269,17 +277,19 @@ class Settings {
   HeaderAlignment alignment;
 
   EdgeInsets get contentMargin {
-    if (this.alignment == HeaderAlignment.topRight) {
+    if ([HeaderAlignment.topRight, HeaderAlignment.bottomRight].contains(this.alignment)) {
       return EdgeInsets.only(
         left: 10,
-        bottom: 10,
+        top: 5,
+        bottom: 5,
         right: 90,
       );
     }
 
     return EdgeInsets.only(
       left: 90,
-      bottom: 10,
+      bottom: 5,
+      top: 5,
       right: 10,
     );
   }
