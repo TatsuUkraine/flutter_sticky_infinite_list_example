@@ -67,6 +67,31 @@ class _MyHomePageState extends State<MyHomePage> {
                   padding: EdgeInsets.all(8),
                   child: Column(
                     children: <Widget>[
+                      ListTile(
+                        title: Text("Scroll anchor"),
+                        trailing: DropdownButton<double>(
+                          value: _settings.anchor,
+                          items: [
+                            DropdownMenuItem(
+                              child: Text("0"),
+                              value: 0,
+                            ),
+                            DropdownMenuItem(
+                              child: Text("0.5"),
+                              value: .5,
+                            ),
+                            DropdownMenuItem(
+                              child: Text("1"),
+                              value: 1,
+                            ),
+                          ],
+                          onChanged: (value) {
+                            setState(() {
+                              _settings.anchor = value;
+                            });
+                          },
+                        ),
+                      ),
                       SwitchListTile(
                         title: Text("Render negative infinite list"),
                         value: _settings.multiDirection,
@@ -79,21 +104,21 @@ class _MyHomePageState extends State<MyHomePage> {
                       ListTile(
                         title: Text("Max number of items"),
                         trailing: DropdownButton<int>(
-                          value: _settings.maxCount == null ? 0 : _settings.maxCount,
+                          value: _settings.maxCount == null ? -1 : _settings.maxCount,
                           items: [
                             DropdownMenuItem(
                               child: Text("Infinite"),
-                              value: 0,
+                              value: -1,
                             ),
                           ]..addAll(
-                              [10, 20, 30, 40].map((value) => DropdownMenuItem(
+                              [0, 10, 20, 30, 40].map((value) => DropdownMenuItem(
                                   child: Text(value.toString()),
                                   value: value
                               ))
                           ),
                           onChanged: (value) {
                             setState(() {
-                              _settings.maxCount = value == 0 ? null : value;
+                              _settings.maxCount = value == -1 ? null : value;
                             });
                           },
                         ),
@@ -101,21 +126,21 @@ class _MyHomePageState extends State<MyHomePage> {
                       ListTile(
                         title: Text("Min number of items"),
                         trailing: DropdownButton<int>(
-                          value: _settings.minCount == null ? 0 : _settings.minCount,
+                          value: _settings.minCount == null ? -1 : _settings.minCount,
                           items: [
                             DropdownMenuItem(
                               child: Text("Infinite"),
-                              value: 0,
+                              value: -1,
                             ),
                           ]..addAll(
-                              [-10, -20, -30, -40].map((value) => DropdownMenuItem(
+                              [0, -10, -20, -30, -40].map((value) => DropdownMenuItem(
                                   child: Text(value.toString()),
                                   value: value
                               ))
                           ),
                           onChanged: (value) {
                             setState(() {
-                              _settings.minCount = value == 0 ? null : value;
+                              _settings.minCount = value == -1 ? null : value;
                             });
                           },
                         ),
@@ -132,6 +157,14 @@ class _MyHomePageState extends State<MyHomePage> {
                             DropdownMenuItem(
                               child: Text("Top right"),
                               value: HeaderAlignment.topRight,
+                            ),
+                            DropdownMenuItem(
+                              child: Text("Bottom left"),
+                              value: HeaderAlignment.bottomLeft,
+                            ),
+                            DropdownMenuItem(
+                              child: Text("Bottom right"),
+                              value: HeaderAlignment.bottomRight,
                             ),
                           ],
                           onChanged: (value) {
@@ -192,6 +225,7 @@ class ScrollWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => InfiniteList(
+    anchor: settings.anchor,
     controller: scrollController,
     direction: settings.multiDirection ? InfiniteListDirection.multi : InfiniteListDirection.single,
     minChildCount: settings.minCount,
@@ -213,7 +247,7 @@ class ScrollWidget extends StatelessWidget {
             ),
             height: 70,
             width: 70,
-            margin: EdgeInsets.symmetric(horizontal: 10),
+            margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -267,19 +301,22 @@ class Settings {
   int maxCount;
   bool multiDirection;
   HeaderAlignment alignment;
+  double anchor;
 
   EdgeInsets get contentMargin {
-    if (this.alignment == HeaderAlignment.topRight) {
+    if ([HeaderAlignment.topRight, HeaderAlignment.bottomRight].contains(this.alignment)) {
       return EdgeInsets.only(
         left: 10,
-        bottom: 10,
+        top: 5,
+        bottom: 5,
         right: 90,
       );
     }
 
     return EdgeInsets.only(
       left: 90,
-      bottom: 10,
+      bottom: 5,
+      top: 5,
       right: 10,
     );
   }
@@ -289,5 +326,6 @@ class Settings {
     this.maxCount,
     this.alignment = HeaderAlignment.topLeft,
     this.multiDirection = false,
+    this.anchor = 0,
   });
 }
