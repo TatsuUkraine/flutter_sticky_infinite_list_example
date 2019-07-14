@@ -24,8 +24,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   intl: ^0.15.8
-  sticky_infinite_list:
-    path: ../sticky_infinite_list
+  sticky_infinite_list: ^1.1.0
 
 dev_dependencies:
   flutter_test:
