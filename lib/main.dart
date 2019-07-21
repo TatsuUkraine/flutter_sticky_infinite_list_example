@@ -57,149 +57,165 @@ class _MyHomePageState extends State<MyHomePage> {
     appBar: AppBar(
       title: Text(widget.title),
     ),
-    body: Column(
-      children: <Widget>[
-        Container(
-            child: ExpansionTile(
-              title: Text("Settings"),
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.all(8),
-                  child: Column(
-                    children: <Widget>[
-                      ListTile(
-                        title: Text("Scroll anchor"),
-                        trailing: DropdownButton<double>(
-                          value: _settings.anchor,
-                          items: [
-                            DropdownMenuItem(
-                              child: Text("0"),
-                              value: 0,
-                            ),
-                            DropdownMenuItem(
-                              child: Text("0.5"),
-                              value: .5,
-                            ),
-                            DropdownMenuItem(
-                              child: Text("1"),
-                              value: 1,
-                            ),
-                          ],
-                          onChanged: (value) {
-                            setState(() {
-                              _settings.anchor = value;
-                            });
-                          },
-                        ),
-                      ),
-                      SwitchListTile(
-                        title: Text("Render negative infinite list"),
-                        value: _settings.multiDirection,
-                        onChanged: (value) {
-                          setState(() {
-                            _settings.multiDirection = value;
-                          });
-                        },
-                      ),
-                      ListTile(
-                        title: Text("Max number of items"),
-                        trailing: DropdownButton<int>(
-                          value: _settings.maxCount == null ? -1 : _settings.maxCount,
-                          items: [
-                            DropdownMenuItem(
-                              child: Text("Infinite"),
-                              value: -1,
-                            ),
-                          ]..addAll(
-                              [0, 10, 20, 30, 40].map((value) => DropdownMenuItem(
-                                  child: Text(value.toString()),
-                                  value: value
-                              ))
-                          ),
-                          onChanged: (value) {
-                            setState(() {
-                              _settings.maxCount = value == -1 ? null : value;
-                            });
-                          },
-                        ),
-                      ),
-                      ListTile(
-                        title: Text("Min number of items"),
-                        trailing: DropdownButton<int>(
-                          value: _settings.minCount == null ? -1 : _settings.minCount,
-                          items: [
-                            DropdownMenuItem(
-                              child: Text("Infinite"),
-                              value: -1,
-                            ),
-                          ]..addAll(
-                              [0, -10, -20, -30, -40].map((value) => DropdownMenuItem(
-                                  child: Text(value.toString()),
-                                  value: value
-                              ))
-                          ),
-                          onChanged: (value) {
-                            setState(() {
-                              _settings.minCount = value == -1 ? null : value;
-                            });
-                          },
-                        ),
-                      ),
-                      ListTile(
-                        title: Text("Header alignment"),
-                        trailing: DropdownButton<HeaderAlignment>(
-                          value: _settings.alignment,
-                          items: [
-                            DropdownMenuItem(
-                              child: Text("Top left"),
-                              value: HeaderAlignment.topLeft,
-                            ),
-                            DropdownMenuItem(
-                              child: Text("Top right"),
-                              value: HeaderAlignment.topRight,
-                            ),
-                            DropdownMenuItem(
-                              child: Text("Bottom left"),
-                              value: HeaderAlignment.bottomLeft,
-                            ),
-                            DropdownMenuItem(
-                              child: Text("Bottom right"),
-                              value: HeaderAlignment.bottomRight,
-                            ),
-                          ],
-                          onChanged: (value) {
-                            setState(() {
-                              _settings.alignment = value;
-                            });
-                          },
-                        ),
-                      ),
-                      Center(
-                        child: RaisedButton(
-                            child: Text("Scroll to center"),
-                            onPressed: () {
-                              _scrollController.animateTo(
-                                0,
-                                duration: Duration(seconds: 1),
-                                curve: Curves.linearToEaseOut,
-                              );
-                            }
-                        ),
-                      ),
-                    ],
+    drawer: Drawer(
+      child: SafeArea(
+        child: ListView(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                "Settings",
+                style: Theme.of(context).textTheme.headline,
+              ),
+            ),
+            ListTile(
+              title: Text("Scroll anchor"),
+              trailing: DropdownButton<double>(
+                value: _settings.anchor,
+                items: [
+                  DropdownMenuItem(
+                    child: Text("0"),
+                    value: 0,
                   ),
+                  DropdownMenuItem(
+                    child: Text("0.5"),
+                    value: .5,
+                  ),
+                  DropdownMenuItem(
+                    child: Text("1"),
+                    value: 1,
+                  ),
+                ],
+                onChanged: (value) {
+                  setState(() {
+                    _settings.anchor = value;
+                  });
+                },
+              ),
+            ),
+            SwitchListTile(
+              title: Text("Render negative infinite list"),
+              value: _settings.multiDirection,
+              onChanged: (value) {
+                setState(() {
+                  _settings.multiDirection = value;
+                });
+              },
+            ),
+            ListTile(
+              title: Text("Max number of items"),
+              trailing: DropdownButton<int>(
+                value: _settings.maxCount == null ? -1 : _settings.maxCount,
+                items: [
+                  DropdownMenuItem(
+                    child: Text("Infinite"),
+                    value: -1,
+                  ),
+                ]..addAll(
+                    [0, 10, 20, 30, 40].map((value) => DropdownMenuItem(
+                        child: Text(value.toString()),
+                        value: value
+                    ))
                 ),
-              ],
-            )
+                onChanged: (value) {
+                  setState(() {
+                    _settings.maxCount = value == -1 ? null : value;
+                  });
+                },
+              ),
+            ),
+            ListTile(
+              title: Text("Min number of items"),
+              trailing: DropdownButton<int>(
+                value: _settings.minCount == null ? -1 : _settings.minCount,
+                items: [
+                  DropdownMenuItem(
+                    child: Text("Infinite"),
+                    value: -1,
+                  ),
+                ]..addAll(
+                    [0, -10, -20, -30, -40].map((value) => DropdownMenuItem(
+                        child: Text(value.toString()),
+                        value: value
+                    ))
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    _settings.minCount = value == -1 ? null : value;
+                  });
+                },
+              ),
+            ),
+            ListTile(
+              title: Text("Header alignment"),
+              trailing: DropdownButton<HeaderAlignment>(
+                value: _settings.alignment,
+                items: [
+                  DropdownMenuItem(
+                    child: Text("Top left"),
+                    value: HeaderAlignment.topLeft,
+                  ),
+                  DropdownMenuItem(
+                    child: Text("Top right"),
+                    value: HeaderAlignment.topRight,
+                  ),
+                  DropdownMenuItem(
+                    child: Text("Bottom left"),
+                    value: HeaderAlignment.bottomLeft,
+                  ),
+                  DropdownMenuItem(
+                    child: Text("Bottom right"),
+                    value: HeaderAlignment.bottomRight,
+                  ),
+                ],
+                onChanged: (value) {
+                  setState(() {
+                    _settings.alignment = value;
+                  });
+                },
+              ),
+            ),
+            ListTile(
+              title: Text("Scroll direction"),
+              trailing: DropdownButton<Axis>(
+                value: _settings.scrollDirection,
+                items: [
+                  DropdownMenuItem(
+                    child: Text("Vertical"),
+                    value: Axis.vertical,
+                  ),
+                  DropdownMenuItem(
+                    child: Text("Horizontal"),
+                    value: Axis.horizontal,
+                  ),
+                ],
+                onChanged: (value) {
+                  setState(() {
+                    _settings.scrollDirection = value;
+                  });
+                },
+              ),
+            ),
+            Center(
+              child: RaisedButton(
+                  child: Text("Scroll to center"),
+                  onPressed: () {
+                    _scrollController.animateTo(
+                      0,
+                      duration: Duration(seconds: 1),
+                      curve: Curves.linearToEaseOut,
+                    );
+                  }
+              ),
+            ),
+          ],
         ),
-        Flexible(
-          child: ScrollWidget(
-            settings: _settings,
-            scrollController: _scrollController,
-            stream: _streamController.stream,
-          ),
-        )
-      ],
+      ),
+    ),
+    body: ScrollWidget(
+      settings: _settings,
+      scrollController: _scrollController,
+      stream: _streamController.stream,
     ),
   );
 
@@ -225,6 +241,12 @@ class ScrollWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => InfiniteList(
+    /// when direction changes dynamically, Flutter
+    /// won't rerender scroll completely,
+    /// which means that gesture detector on scroll itself
+    /// remains from original direction
+    key: Key(settings.scrollDirection.toString()),
+    scrollDirection: settings.scrollDirection,
     anchor: settings.anchor,
     controller: scrollController,
     direction: settings.multiDirection ? InfiniteListDirection.multi : InfiniteListDirection.single,
@@ -279,8 +301,8 @@ class ScrollWidget extends StatelessWidget {
           ),
           margin: settings.contentMargin,
           padding: EdgeInsets.all(8),
-          height: 300,
-          width: double.infinity,
+          height: settings.contentHeight,
+          width: settings.contentWidth,
           child: Text(
             DateFormat.yMMMMd().format(date),
             style: TextStyle(
@@ -302,22 +324,59 @@ class Settings {
   bool multiDirection;
   HeaderAlignment alignment;
   double anchor;
+  Axis scrollDirection;
+
+  bool get scrollVertical => scrollDirection == Axis.vertical;
+
+  double get contentHeight {
+    if (scrollVertical) {
+      return 300;
+    }
+
+    return double.infinity;
+  }
+
+  double get contentWidth {
+    if (scrollVertical) {
+      return double.infinity;
+    }
+
+    return 300;
+  }
 
   EdgeInsets get contentMargin {
-    if ([HeaderAlignment.topRight, HeaderAlignment.bottomRight].contains(this.alignment)) {
+    if (scrollVertical) {
+      if ([HeaderAlignment.topRight, HeaderAlignment.bottomRight].contains(this.alignment)) {
+        return EdgeInsets.only(
+          left: 10,
+          top: 5,
+          bottom: 5,
+          right: 90,
+        );
+      }
+
       return EdgeInsets.only(
-        left: 10,
-        top: 5,
+        left: 90,
         bottom: 5,
-        right: 90,
+        top: 5,
+        right: 10,
+      );
+    }
+
+    if ([HeaderAlignment.topRight, HeaderAlignment.topLeft].contains(this.alignment)) {
+      return EdgeInsets.only(
+        left: 5,
+        top: 90,
+        bottom: 10,
+        right: 5,
       );
     }
 
     return EdgeInsets.only(
-      left: 90,
-      bottom: 5,
-      top: 5,
-      right: 10,
+      left: 5,
+      bottom: 90,
+      top: 10,
+      right: 5,
     );
   }
 
@@ -327,5 +386,6 @@ class Settings {
     this.alignment = HeaderAlignment.topLeft,
     this.multiDirection = false,
     this.anchor = 0,
+    this.scrollDirection = Axis.vertical,
   });
 }

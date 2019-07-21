@@ -110,9 +110,9 @@ packages:
   sticky_infinite_list:
     dependency: "direct main"
     description:
-      name: sticky_infinite_list
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "../sticky_infinite_list"
+      relative: true
+    source: path
     version: "1.1.0"
   stream_channel:
     dependency: transitive
