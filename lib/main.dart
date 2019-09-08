@@ -25,6 +25,9 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
+      routes: {
+        SingleChildScrollPage.ROUTE: (_) => SingleChildScrollPage(),
+      },
     );
   }
 }
@@ -208,6 +211,14 @@ class _MyHomePageState extends State<MyHomePage> {
                   }
               ),
             ),
+            Center(
+              child: RaisedButton(
+                  child: Text("Go to sigle example"),
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(SingleChildScrollPage.ROUTE);
+                  }
+              ),
+            ),
           ],
         ),
       ),
@@ -388,4 +399,90 @@ class Settings {
     this.anchor = 0,
     this.scrollDirection = Axis.vertical,
   });
+}
+
+
+
+class SingleChildScrollPage extends StatefulWidget {
+  static const String ROUTE = "/single-child";
+
+  @override
+  _SingleChildScrollPageState createState() => _SingleChildScrollPageState();
+}
+
+class _SingleChildScrollPageState extends State<SingleChildScrollPage> {
+  static const double _headerHeight = 50;
+
+  StreamController<StickyState<String>> _headerStream;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _headerStream = StreamController<StickyState<String>>.broadcast();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Single element example'),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            Container(
+              height: height,
+              color: Colors.lightBlueAccent,
+              child: Placeholder(),
+            ),
+            StickyListItem<String>(
+              streamSink: _headerStream.sink,
+              minOffsetProvider: (_) => _headerHeight,
+              header: Container(
+                height: _headerHeight,
+                width: double.infinity,
+                color: Colors.orange,
+                child: Center(
+                  child: StreamBuilder<StickyState<String>>(
+                    stream: _headerStream.stream,
+                    builder: (_, snapshot) {
+                      if (!snapshot.hasData) {
+                        return Container();
+                      }
+
+                      final position = (snapshot.data.position * 100).round();
+
+                      return Text('Position: $position%');
+                    },
+                  ),
+                ),
+              ),
+              content: Container(
+                height: height - _headerHeight,
+                padding: const EdgeInsets.only(top: _headerHeight),
+                color: Colors.blueAccent,
+                child: Placeholder(),
+              ),
+              itemIndex: "single-child",
+            ),
+            Container(
+              height: height,
+              color: Colors.cyan,
+              child: Placeholder(),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    _headerStream.close();
+  }
 }
