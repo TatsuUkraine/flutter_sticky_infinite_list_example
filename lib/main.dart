@@ -199,6 +199,31 @@ class _MyHomePageState extends State<MyHomePage> {
                 },
               ),
             ),
+            ListTile(
+              title: Text("Scroll physics"),
+              trailing: DropdownButton<ScrollPhysicsEnum>(
+                value: _settings.physicsType,
+                items: [
+                  DropdownMenuItem(
+                    child: Text("Platform"),
+                    value: ScrollPhysicsEnum.PLATFORM,
+                  ),
+                  DropdownMenuItem(
+                    child: Text("Android"),
+                    value: ScrollPhysicsEnum.ANDROID,
+                  ),
+                  DropdownMenuItem(
+                    child: Text("iOS"),
+                    value: ScrollPhysicsEnum.IOS,
+                  ),
+                ],
+                onChanged: (value) {
+                  setState(() {
+                    _settings.physicsType = value;
+                  });
+                },
+              ),
+            ),
             Center(
               child: RaisedButton(
                   child: Text("Scroll to center"),
@@ -263,6 +288,7 @@ class ScrollWidget extends StatelessWidget {
     direction: settings.multiDirection ? InfiniteListDirection.multi : InfiniteListDirection.single,
     minChildCount: settings.minCount,
     maxChildCount: settings.maxCount,
+    physics: settings.physics,
     builder: (context, index) {
       final date = DateTime.now().add(
           Duration(
@@ -329,6 +355,12 @@ class ScrollWidget extends StatelessWidget {
 
 }
 
+enum ScrollPhysicsEnum {
+  PLATFORM,
+  IOS,
+  ANDROID,
+}
+
 class Settings {
   int minCount;
   int maxCount;
@@ -336,8 +368,24 @@ class Settings {
   HeaderAlignment alignment;
   double anchor;
   Axis scrollDirection;
+  ScrollPhysicsEnum physicsType;
 
   bool get scrollVertical => scrollDirection == Axis.vertical;
+
+  ScrollPhysics get physics {
+    switch (physicsType) {
+      case ScrollPhysicsEnum.PLATFORM:
+        return null;
+
+      case ScrollPhysicsEnum.ANDROID:
+        return ClampingScrollPhysics();
+
+      case ScrollPhysicsEnum.IOS:
+        return BouncingScrollPhysics();
+    }
+
+    return null;
+  }
 
   double get contentHeight {
     if (scrollVertical) {
@@ -398,6 +446,7 @@ class Settings {
     this.multiDirection = false,
     this.anchor = 0,
     this.scrollDirection = Axis.vertical,
+    this.physicsType = ScrollPhysicsEnum.PLATFORM,
   });
 }
 
