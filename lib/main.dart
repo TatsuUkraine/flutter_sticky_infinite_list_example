@@ -68,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
               padding: const EdgeInsets.all(16.0),
               child: Text(
                 "Settings",
-                style: Theme.of(context).textTheme.headline,
+                style: Theme.of(context).textTheme.headline5,
               ),
             ),
             ListTile(
@@ -149,31 +149,78 @@ class _MyHomePageState extends State<MyHomePage> {
                 },
               ),
             ),
+            SwitchListTile(
+              title: Text("Overlay header"),
+              value: _settings.overlay,
+              onChanged: (value) {
+                setState(() {
+                  _settings.overlay = value;
+                });
+              },
+            ),
             ListTile(
-              title: Text("Header alignment"),
-              trailing: DropdownButton<HeaderAlignment>(
-                value: _settings.alignment,
+              title: Text("Header position alignment"),
+              trailing: DropdownButton<HeaderPositionAxis>(
+                value: _settings.positionAxis,
                 items: [
                   DropdownMenuItem(
-                    child: Text("Top left"),
-                    value: HeaderAlignment.topLeft,
+                    child: Text("Main axis"),
+                    value: HeaderPositionAxis.mainAxis,
                   ),
                   DropdownMenuItem(
-                    child: Text("Top right"),
-                    value: HeaderAlignment.topRight,
-                  ),
-                  DropdownMenuItem(
-                    child: Text("Bottom left"),
-                    value: HeaderAlignment.bottomLeft,
-                  ),
-                  DropdownMenuItem(
-                    child: Text("Bottom right"),
-                    value: HeaderAlignment.bottomRight,
+                    child: Text("Cross axis"),
+                    value: HeaderPositionAxis.crossAxis,
                   ),
                 ],
                 onChanged: (value) {
                   setState(() {
-                    _settings.alignment = value;
+                    _settings.positionAxis = value;
+                  });
+                },
+              ),
+            ),
+            ListTile(
+              title: Text("Header main axis alignment"),
+              trailing: DropdownButton<HeaderMainAxisAlignment>(
+                value: _settings.mainAxisAlignment,
+                items: [
+                  DropdownMenuItem(
+                    child: Text("Start"),
+                    value: HeaderMainAxisAlignment.start,
+                  ),
+                  DropdownMenuItem(
+                    child: Text("End"),
+                    value: HeaderMainAxisAlignment.end,
+                  ),
+                ],
+                onChanged: (value) {
+                  setState(() {
+                    _settings.mainAxisAlignment = value;
+                  });
+                },
+              ),
+            ),
+            ListTile(
+              title: Text("Header cross axis alignment"),
+              trailing: DropdownButton<HeaderCrossAxisAlignment>(
+                value: _settings.crossAxisAlignment,
+                items: [
+                  DropdownMenuItem(
+                    child: Text("Start"),
+                    value: HeaderCrossAxisAlignment.start,
+                  ),
+                  DropdownMenuItem(
+                    child: Text("Center"),
+                    value: HeaderCrossAxisAlignment.center,
+                  ),
+                  DropdownMenuItem(
+                    child: Text("End"),
+                    value: HeaderCrossAxisAlignment.end,
+                  ),
+                ],
+                onChanged: (value) {
+                  setState(() {
+                    _settings.crossAxisAlignment = value;
                   });
                 },
               ),
@@ -296,17 +343,79 @@ class ScrollWidget extends StatelessWidget {
           )
       );
 
+      if (settings.overlay) {
+        return InfiniteListItem.overlay(
+          mainAxisAlignment: settings.mainAxisAlignment,
+          crossAxisAlignment: settings.crossAxisAlignment,
+          headerStateBuilder: (context, state) => Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.orange.withOpacity(1 - state.position),
+              ),
+              height: 70,
+              width: 70,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    date.day.toString(),
+                    style: TextStyle(
+                      fontSize: 21,
+                      color: Colors.black87,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  Text(
+                    DateFormat.MMM().format(date),
+                    style: TextStyle(
+                      height: .7,
+                      fontSize: 17,
+                      color: Colors.black87,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+          contentBuilder: (context) => Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.blueAccent,
+              ),
+              height: settings.contentHeight,
+              width: settings.contentWidth,
+              child: Center(
+                child: Text(
+                  DateFormat.yMMMMd().format(date),
+                  style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.white
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      }
+
       return InfiniteListItem(
-        headerAlignment: settings.alignment,
-        headerStateBuilder: (context, state) {
-          return Container(
+        mainAxisAlignment: settings.mainAxisAlignment,
+        crossAxisAlignment: settings.crossAxisAlignment,
+        positionAxis: settings.positionAxis,
+        headerStateBuilder: (context, state) => Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: Colors.orange.withOpacity(1 - state.position),
             ),
             height: 70,
             width: 70,
-            margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -329,26 +438,28 @@ class ScrollWidget extends StatelessWidget {
                 )
               ],
             ),
-          );
-        },
-        contentBuilder: (context) => Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: Colors.blueAccent,
           ),
-          margin: settings.contentMargin,
-          padding: EdgeInsets.all(8),
-          height: settings.contentHeight,
-          width: settings.contentWidth,
-          child: Text(
-            DateFormat.yMMMMd().format(date),
-            style: TextStyle(
-                fontSize: 18,
-                color: Colors.white
+        ),
+        contentBuilder: (context) => Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: Colors.blueAccent,
+            ),
+            height: settings.contentHeight,
+            width: settings.contentWidth,
+            child: Center(
+              child: Text(
+                DateFormat.yMMMMd().format(date),
+                style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.white
+                ),
+              ),
             ),
           ),
         ),
-        minOffsetProvider: (state) => 80,
       );
     },
   );
@@ -365,10 +476,13 @@ class Settings {
   int minCount;
   int maxCount;
   bool multiDirection;
-  HeaderAlignment alignment;
+  HeaderMainAxisAlignment mainAxisAlignment;
+  HeaderCrossAxisAlignment crossAxisAlignment;
+  HeaderPositionAxis positionAxis;
   double anchor;
   Axis scrollDirection;
   ScrollPhysicsEnum physicsType;
+  bool overlay;
 
   bool get scrollVertical => scrollDirection == Axis.vertical;
 
@@ -403,50 +517,17 @@ class Settings {
     return 300;
   }
 
-  EdgeInsets get contentMargin {
-    if (scrollVertical) {
-      if ([HeaderAlignment.topRight, HeaderAlignment.bottomRight].contains(this.alignment)) {
-        return EdgeInsets.only(
-          left: 10,
-          top: 5,
-          bottom: 5,
-          right: 90,
-        );
-      }
-
-      return EdgeInsets.only(
-        left: 90,
-        bottom: 5,
-        top: 5,
-        right: 10,
-      );
-    }
-
-    if ([HeaderAlignment.topRight, HeaderAlignment.topLeft].contains(this.alignment)) {
-      return EdgeInsets.only(
-        left: 5,
-        top: 90,
-        bottom: 10,
-        right: 5,
-      );
-    }
-
-    return EdgeInsets.only(
-      left: 5,
-      bottom: 90,
-      top: 10,
-      right: 5,
-    );
-  }
-
   Settings({
     this.minCount,
     this.maxCount,
-    this.alignment = HeaderAlignment.topLeft,
+    this.mainAxisAlignment = HeaderMainAxisAlignment.start,
+    this.crossAxisAlignment = HeaderCrossAxisAlignment.start,
+    this.positionAxis = HeaderPositionAxis.mainAxis,
     this.multiDirection = false,
     this.anchor = 0,
     this.scrollDirection = Axis.vertical,
     this.physicsType = ScrollPhysicsEnum.PLATFORM,
+    this.overlay = false,
   });
 }
 
@@ -462,14 +543,8 @@ class SingleChildScrollPage extends StatefulWidget {
 class _SingleChildScrollPageState extends State<SingleChildScrollPage> {
   static const double _headerHeight = 50;
 
-  StreamController<StickyState<String>> _headerStream;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _headerStream = StreamController<StickyState<String>>.broadcast();
-  }
+  final StreamController<StickyState<String>> _headerStream = StreamController<StickyState<String>>.broadcast();
+  final StreamController<StickyState<String>> _headerOverlayStream = StreamController<StickyState<String>>.broadcast();
 
   @override
   Widget build(BuildContext context) {
@@ -489,7 +564,6 @@ class _SingleChildScrollPageState extends State<SingleChildScrollPage> {
             ),
             StickyListItem<String>(
               streamSink: _headerStream.sink,
-              minOffsetProvider: (_) => _headerHeight,
               header: Container(
                 height: _headerHeight,
                 width: double.infinity,
@@ -504,18 +578,45 @@ class _SingleChildScrollPageState extends State<SingleChildScrollPage> {
 
                       final position = (snapshot.data.position * 100).round();
 
-                      return Text('Position: $position%');
+                      return Text('Positioned relative. Position: $position%');
                     },
                   ),
                 ),
               ),
               content: Container(
-                height: height - _headerHeight,
-                padding: const EdgeInsets.only(top: _headerHeight),
+                height: height,
                 color: Colors.blueAccent,
                 child: Placeholder(),
               ),
               itemIndex: "single-child",
+            ),
+            StickyListItem<String>.overlay(
+              streamSink: _headerOverlayStream.sink,
+              header: Container(
+                height: _headerHeight,
+                width: double.infinity,
+                color: Colors.orange,
+                child: Center(
+                  child: StreamBuilder<StickyState<String>>(
+                    stream: _headerOverlayStream.stream,
+                    builder: (_, snapshot) {
+                      if (!snapshot.hasData) {
+                        return Container();
+                      }
+
+                      final position = (snapshot.data.position * 100).round();
+
+                      return Text('Positioned overlay. Position: $position%');
+                    },
+                  ),
+                ),
+              ),
+              content: Container(
+                height: height,
+                color: Colors.lightBlueAccent,
+                child: Placeholder(),
+              ),
+              itemIndex: "single-overlayed-child",
             ),
             Container(
               height: height,
@@ -533,5 +634,6 @@ class _SingleChildScrollPageState extends State<SingleChildScrollPage> {
     super.dispose();
 
     _headerStream.close();
+    _headerOverlayStream.close();
   }
 }
