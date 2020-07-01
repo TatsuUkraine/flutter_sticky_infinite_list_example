@@ -145,9 +145,9 @@ packages:
   sticky_infinite_list:
     dependency: "direct main"
     description:
-      path: "../sticky_infinite_list"
-      relative: true
-    source: path
+      name: sticky_infinite_list
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "2.0.0"
   stream_channel:
     dependency: transitive
