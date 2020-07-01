@@ -106,9 +106,9 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             ),
             ListTile(
-              title: Text("Max number of items"),
+              title: Text("Max positive number of items"),
               trailing: DropdownButton<int>(
-                value: _settings.maxCount == null ? -1 : _settings.maxCount,
+                value: _settings.posCount == null ? -1 : _settings.posCount,
                 items: [
                   DropdownMenuItem(
                     child: Text("Infinite"),
@@ -122,29 +122,29 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 onChanged: (value) {
                   setState(() {
-                    _settings.maxCount = value == -1 ? null : value;
+                    _settings.posCount = value == -1 ? null : value;
                   });
                 },
               ),
             ),
             ListTile(
-              title: Text("Min number of items"),
+              title: Text("Max negative number of items"),
               trailing: DropdownButton<int>(
-                value: _settings.minCount == null ? -1 : _settings.minCount,
+                value: _settings.negCount == null ? -1 : _settings.negCount,
                 items: [
                   DropdownMenuItem(
                     child: Text("Infinite"),
                     value: -1,
                   ),
                 ]..addAll(
-                    [0, -10, -20, -30, -40].map((value) => DropdownMenuItem(
+                    [0, 10, 20, 30, 40].map((value) => DropdownMenuItem(
                         child: Text(value.toString()),
                         value: value
                     ))
                 ),
                 onChanged: (value) {
                   setState(() {
-                    _settings.minCount = value == -1 ? null : value;
+                    _settings.negCount = value == -1 ? null : value;
                   });
                 },
               ),
@@ -333,8 +333,8 @@ class ScrollWidget extends StatelessWidget {
     anchor: settings.anchor,
     controller: scrollController,
     direction: settings.multiDirection ? InfiniteListDirection.multi : InfiniteListDirection.single,
-    minChildCount: settings.minCount,
-    maxChildCount: settings.maxCount,
+    negChildCount: settings.negCount,
+    posChildCount: settings.posCount,
     physics: settings.physics,
     builder: (context, index) {
       final date = DateTime.now().add(
@@ -473,8 +473,8 @@ enum ScrollPhysicsEnum {
 }
 
 class Settings {
-  int minCount;
-  int maxCount;
+  int negCount;
+  int posCount;
   bool multiDirection;
   HeaderMainAxisAlignment mainAxisAlignment;
   HeaderCrossAxisAlignment crossAxisAlignment;
@@ -518,8 +518,8 @@ class Settings {
   }
 
   Settings({
-    this.minCount,
-    this.maxCount,
+    this.negCount,
+    this.posCount,
     this.mainAxisAlignment = HeaderMainAxisAlignment.start,
     this.crossAxisAlignment = HeaderCrossAxisAlignment.start,
     this.positionAxis = HeaderPositionAxis.mainAxis,
