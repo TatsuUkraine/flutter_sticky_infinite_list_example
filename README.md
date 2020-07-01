@@ -2,6 +2,9 @@
 
 Example for sticky [infinite list package](https://github.com/TatsuUkraine/flutter_sticky_infinite_list)
 
+Example for v1.x.x can be found
+[here](https://github.com/TatsuUkraine/flutter_sticky_infinite_list_example/tree/1.0.0)
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
