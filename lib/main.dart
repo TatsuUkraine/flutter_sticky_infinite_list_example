@@ -174,7 +174,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
                 onChanged: (value) {
                   setState(() {
-                    _settings.positionAxis = value;
+                    _settings.positionAxis = value!;
                   });
                 },
               ),
@@ -195,7 +195,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
                 onChanged: (value) {
                   setState(() {
-                    _settings.mainAxisAlignment = value;
+                    _settings.mainAxisAlignment = value!;
                   });
                 },
               ),
@@ -220,7 +220,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
                 onChanged: (value) {
                   setState(() {
-                    _settings.crossAxisAlignment = value;
+                    _settings.crossAxisAlignment = value!;
                   });
                 },
               ),
@@ -345,8 +345,8 @@ class ScrollWidget extends StatelessWidget {
 
       if (settings.overlay) {
         return InfiniteListItem.overlay(
-          mainAxisAlignment: settings.mainAxisAlignment!,
-          crossAxisAlignment: settings.crossAxisAlignment!,
+          mainAxisAlignment: settings.mainAxisAlignment,
+          crossAxisAlignment: settings.crossAxisAlignment,
           headerStateBuilder: (context, state) => Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(
@@ -404,9 +404,9 @@ class ScrollWidget extends StatelessWidget {
       }
 
       return InfiniteListItem(
-        mainAxisAlignment: settings.mainAxisAlignment!,
-        crossAxisAlignment: settings.crossAxisAlignment!,
-        positionAxis: settings.positionAxis!,
+        mainAxisAlignment: settings.mainAxisAlignment,
+        crossAxisAlignment: settings.crossAxisAlignment,
+        positionAxis: settings.positionAxis,
         headerStateBuilder: (context, state) => Padding(
           padding: const EdgeInsets.all(8.0),
           child: Container(
@@ -476,9 +476,9 @@ class Settings {
   int? negCount;
   int? posCount;
   bool multiDirection;
-  HeaderMainAxisAlignment? mainAxisAlignment;
-  HeaderCrossAxisAlignment? crossAxisAlignment;
-  HeaderPositionAxis? positionAxis;
+  HeaderMainAxisAlignment mainAxisAlignment;
+  HeaderCrossAxisAlignment crossAxisAlignment;
+  HeaderPositionAxis positionAxis;
   double anchor;
   Axis? scrollDirection;
   ScrollPhysicsEnum? physicsType;
