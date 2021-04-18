@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage({Key? key, required this.title}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -75,23 +75,23 @@ class _MyHomePageState extends State<MyHomePage> {
               title: Text("Scroll anchor"),
               trailing: DropdownButton<double>(
                 value: _settings.anchor,
-                items: [
-                  DropdownMenuItem(
+                items: const [
+                  DropdownMenuItem<double>(
                     child: Text("0"),
                     value: 0,
                   ),
-                  DropdownMenuItem(
+                  DropdownMenuItem<double>(
                     child: Text("0.5"),
                     value: .5,
                   ),
-                  DropdownMenuItem(
+                  DropdownMenuItem<double>(
                     child: Text("1"),
                     value: 1,
                   ),
                 ],
                 onChanged: (value) {
                   setState(() {
-                    _settings.anchor = value;
+                    _settings.anchor = value ?? 0;
                   });
                 },
               ),
@@ -174,7 +174,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
                 onChanged: (value) {
                   setState(() {
-                    _settings.positionAxis = value;
+                    _settings.positionAxis = value!;
                   });
                 },
               ),
@@ -195,7 +195,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
                 onChanged: (value) {
                   setState(() {
-                    _settings.mainAxisAlignment = value;
+                    _settings.mainAxisAlignment = value!;
                   });
                 },
               ),
@@ -220,7 +220,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
                 onChanged: (value) {
                   setState(() {
-                    _settings.crossAxisAlignment = value;
+                    _settings.crossAxisAlignment = value!;
                   });
                 },
               ),
@@ -272,7 +272,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             Center(
-              child: RaisedButton(
+              child: ElevatedButton(
                   child: Text("Scroll to center"),
                   onPressed: () {
                     _scrollController.animateTo(
@@ -284,8 +284,8 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             Center(
-              child: RaisedButton(
-                  child: Text("Go to sigle example"),
+              child: ElevatedButton(
+                  child: Text("Go to single example"),
                   onPressed: () {
                     Navigator.of(context).pushNamed(SingleChildScrollPage.ROUTE);
                   }
@@ -311,15 +311,15 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 class ScrollWidget extends StatelessWidget {
-  final Stream<Settings> stream;
-  final ScrollController scrollController;
+  final Stream<Settings>? stream;
+  final ScrollController? scrollController;
   final Settings settings;
 
   const ScrollWidget({
-    Key key,
+    Key? key,
     this.stream,
     this.scrollController,
-    this.settings,
+    required this.settings,
   }) : super(key: key);
 
   @override
@@ -329,7 +329,7 @@ class ScrollWidget extends StatelessWidget {
     /// which means that gesture detector on scroll itself
     /// remains from original direction
     key: Key(settings.scrollDirection.toString()),
-    scrollDirection: settings.scrollDirection,
+    scrollDirection: settings.scrollDirection!,
     anchor: settings.anchor,
     controller: scrollController,
     direction: settings.multiDirection ? InfiniteListDirection.multi : InfiniteListDirection.single,
@@ -473,32 +473,31 @@ enum ScrollPhysicsEnum {
 }
 
 class Settings {
-  int negCount;
-  int posCount;
+  int? negCount;
+  int? posCount;
   bool multiDirection;
   HeaderMainAxisAlignment mainAxisAlignment;
   HeaderCrossAxisAlignment crossAxisAlignment;
   HeaderPositionAxis positionAxis;
   double anchor;
-  Axis scrollDirection;
-  ScrollPhysicsEnum physicsType;
+  Axis? scrollDirection;
+  ScrollPhysicsEnum? physicsType;
   bool overlay;
 
   bool get scrollVertical => scrollDirection == Axis.vertical;
 
-  ScrollPhysics get physics {
+  ScrollPhysics? get physics {
     switch (physicsType) {
-      case ScrollPhysicsEnum.PLATFORM:
-        return null;
-
       case ScrollPhysicsEnum.ANDROID:
         return ClampingScrollPhysics();
 
       case ScrollPhysicsEnum.IOS:
         return BouncingScrollPhysics();
-    }
 
-    return null;
+      case ScrollPhysicsEnum.PLATFORM:
+      default:
+        return null;
+    }
   }
 
   double get contentHeight {
@@ -576,7 +575,7 @@ class _SingleChildScrollPageState extends State<SingleChildScrollPage> {
                         return Container();
                       }
 
-                      final position = (snapshot.data.position * 100).round();
+                      final position = (snapshot.data!.position * 100).round();
 
                       return Text('Positioned relative. Position: $position%');
                     },
@@ -604,7 +603,7 @@ class _SingleChildScrollPageState extends State<SingleChildScrollPage> {
                         return Container();
                       }
 
-                      final position = (snapshot.data.position * 100).round();
+                      final position = (snapshot.data!.position * 100).round();
 
                       return Text('Positioned overlay. Position: $position%');
                     },
