@@ -28,7 +28,7 @@ dependencies:
   flutter_lints: ^6.0.0
   sticky_infinite_list:
     path: ../flutter_sticky_infinite_list
-
+  material_ui: ^1.2.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

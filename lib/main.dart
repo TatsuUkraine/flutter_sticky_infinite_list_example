@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:intl/intl.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:sticky_infinite_list/sticky_infinite_list.dart';
 
 void main() => runApp(MyApp());
