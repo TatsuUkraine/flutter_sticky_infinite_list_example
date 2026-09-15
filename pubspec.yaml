@@ -26,8 +26,7 @@ dependencies:
   cupertino_icons: ^1.0.9
   intl: ^0.20.3
   flutter_lints: ^6.0.0
-  sticky_infinite_list:
-    path: ../flutter_sticky_infinite_list
+  sticky_infinite_list: ^5.0.0
   material_ui: ^1.2.0
 dev_dependencies:
   flutter_test:

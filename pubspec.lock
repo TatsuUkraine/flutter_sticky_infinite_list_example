@@ -192,10 +192,11 @@ packages:
   sticky_infinite_list:
     dependency: "direct main"
     description:
-      path: "../flutter_sticky_infinite_list"
-      relative: true
-    source: path
-    version: "4.0.1"
+      name: sticky_infinite_list
+      sha256: "3d9f533d3c54ec009d9a80ea77ef1288a09645f04fc3954545f24ac6c9e938d6"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.0.0"
   stream_channel:
     dependency: transitive
     description:
