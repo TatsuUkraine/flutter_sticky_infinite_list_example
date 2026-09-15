@@ -1,12 +1,13 @@
 import 'dart:async';
 
 import 'package:intl/intl.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:sticky_infinite_list/sticky_infinite_list.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -26,14 +27,14 @@ class MyApp extends StatelessWidget {
       ),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
       routes: {
-        SingleChildScrollPage.ROUTE: (_) => SingleChildScrollPage(),
+        SingleChildScrollPage.route: (_) => SingleChildScrollPage(),
       },
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
+  const MyHomePage({super.key, required this.title});
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -53,7 +54,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final StreamController<Settings> _streamController = StreamController<Settings>.broadcast();
   final ScrollController _scrollController = ScrollController();
-  Settings _settings = Settings();
+  final Settings _settings = Settings();
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -68,7 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
               padding: const EdgeInsets.all(16.0),
               child: Text(
                 "Settings",
-                style: Theme.of(context).textTheme.headline5,
+                style: Theme.of(context).textTheme.titleMedium,
               ),
             ),
             ListTile(
@@ -77,16 +78,16 @@ class _MyHomePageState extends State<MyHomePage> {
                 value: _settings.anchor,
                 items: const [
                   DropdownMenuItem<double>(
-                    child: Text("0"),
                     value: 0,
+                    child: Text("0"),
                   ),
                   DropdownMenuItem<double>(
-                    child: Text("0.5"),
                     value: .5,
+                    child: Text("0.5"),
                   ),
                   DropdownMenuItem<double>(
-                    child: Text("1"),
                     value: 1,
+                    child: Text("1"),
                   ),
                 ],
                 onChanged: (value) {
@@ -108,18 +109,16 @@ class _MyHomePageState extends State<MyHomePage> {
             ListTile(
               title: Text("Max positive number of items"),
               trailing: DropdownButton<int>(
-                value: _settings.posCount == null ? -1 : _settings.posCount,
+                value: _settings.posCount ?? -1,
                 items: [
                   DropdownMenuItem(
-                    child: Text("Infinite"),
                     value: -1,
-                  ),
-                ]..addAll(
-                    [0, 10, 20, 30, 40].map((value) => DropdownMenuItem(
-                        child: Text(value.toString()),
-                        value: value
-                    ))
-                ),
+                    child: Text("Infinite"),
+                  ), ...[0, 10, 20, 30, 40].map((value) => DropdownMenuItem(
+                        value: value,
+                        child: Text(value.toString())
+                    )),
+                ],
                 onChanged: (value) {
                   setState(() {
                     _settings.posCount = value == -1 ? null : value;
@@ -130,18 +129,16 @@ class _MyHomePageState extends State<MyHomePage> {
             ListTile(
               title: Text("Max negative number of items"),
               trailing: DropdownButton<int>(
-                value: _settings.negCount == null ? -1 : _settings.negCount,
+                value: _settings.negCount ?? -1,
                 items: [
                   DropdownMenuItem(
-                    child: Text("Infinite"),
                     value: -1,
-                  ),
-                ]..addAll(
-                    [0, 10, 20, 30, 40].map((value) => DropdownMenuItem(
-                        child: Text(value.toString()),
-                        value: value
-                    ))
-                ),
+                    child: Text("Infinite"),
+                  ), ...[0, 10, 20, 30, 40].map((value) => DropdownMenuItem(
+                        value: value,
+                        child: Text(value.toString())
+                    )),
+                ],
                 onChanged: (value) {
                   setState(() {
                     _settings.negCount = value == -1 ? null : value;
@@ -164,12 +161,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 value: _settings.positionAxis,
                 items: [
                   DropdownMenuItem(
-                    child: Text("Main axis"),
                     value: HeaderPositionAxis.mainAxis,
+                    child: Text("Main axis"),
                   ),
                   DropdownMenuItem(
-                    child: Text("Cross axis"),
                     value: HeaderPositionAxis.crossAxis,
+                    child: Text("Cross axis"),
                   ),
                 ],
                 onChanged: (value) {
@@ -185,12 +182,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 value: _settings.mainAxisAlignment,
                 items: [
                   DropdownMenuItem(
-                    child: Text("Start"),
                     value: HeaderMainAxisAlignment.start,
+                    child: Text("Start"),
                   ),
                   DropdownMenuItem(
-                    child: Text("End"),
                     value: HeaderMainAxisAlignment.end,
+                    child: Text("End"),
                   ),
                 ],
                 onChanged: (value) {
@@ -206,16 +203,16 @@ class _MyHomePageState extends State<MyHomePage> {
                 value: _settings.crossAxisAlignment,
                 items: [
                   DropdownMenuItem(
-                    child: Text("Start"),
                     value: HeaderCrossAxisAlignment.start,
+                    child: Text("Start"),
                   ),
                   DropdownMenuItem(
-                    child: Text("Center"),
                     value: HeaderCrossAxisAlignment.center,
+                    child: Text("Center"),
                   ),
                   DropdownMenuItem(
-                    child: Text("End"),
                     value: HeaderCrossAxisAlignment.end,
+                    child: Text("End"),
                   ),
                 ],
                 onChanged: (value) {
@@ -231,12 +228,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 value: _settings.scrollDirection,
                 items: [
                   DropdownMenuItem(
-                    child: Text("Vertical"),
                     value: Axis.vertical,
+                    child: Text("Vertical"),
                   ),
                   DropdownMenuItem(
-                    child: Text("Horizontal"),
                     value: Axis.horizontal,
+                    child: Text("Horizontal"),
                   ),
                 ],
                 onChanged: (value) {
@@ -252,16 +249,16 @@ class _MyHomePageState extends State<MyHomePage> {
                 value: _settings.physicsType,
                 items: [
                   DropdownMenuItem(
+                    value: ScrollPhysicsEnum.platform,
                     child: Text("Platform"),
-                    value: ScrollPhysicsEnum.PLATFORM,
                   ),
                   DropdownMenuItem(
+                    value: ScrollPhysicsEnum.android,
                     child: Text("Android"),
-                    value: ScrollPhysicsEnum.ANDROID,
                   ),
                   DropdownMenuItem(
+                    value: ScrollPhysicsEnum.ios,
                     child: Text("iOS"),
-                    value: ScrollPhysicsEnum.IOS,
                   ),
                 ],
                 onChanged: (value) {
@@ -287,7 +284,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: ElevatedButton(
                   child: Text("Go to single example"),
                   onPressed: () {
-                    Navigator.of(context).pushNamed(SingleChildScrollPage.ROUTE);
+                    Navigator.of(context).pushNamed(SingleChildScrollPage.route);
                   }
               ),
             ),
@@ -316,11 +313,11 @@ class ScrollWidget extends StatelessWidget {
   final Settings settings;
 
   const ScrollWidget({
-    Key? key,
+    super.key,
     this.stream,
     this.scrollController,
     required this.settings,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) => InfiniteList(
@@ -352,7 +349,7 @@ class ScrollWidget extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.orange.withOpacity(1 - state.position),
+                color: Colors.orange.withValues(alpha: 1 - state.position),
               ),
               height: 70,
               width: 70,
@@ -412,7 +409,7 @@ class ScrollWidget extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: Colors.orange.withOpacity(1 - state.position),
+              color: Colors.orange.withValues(alpha: 1 - state.position),
             ),
             height: 70,
             width: 70,
@@ -467,9 +464,9 @@ class ScrollWidget extends StatelessWidget {
 }
 
 enum ScrollPhysicsEnum {
-  PLATFORM,
-  IOS,
-  ANDROID,
+  platform,
+  ios,
+  android,
 }
 
 class Settings {
@@ -488,14 +485,14 @@ class Settings {
 
   ScrollPhysics? get physics {
     switch (physicsType) {
-      case ScrollPhysicsEnum.ANDROID:
+      case ScrollPhysicsEnum.android:
         return ClampingScrollPhysics();
 
-      case ScrollPhysicsEnum.IOS:
+      case ScrollPhysicsEnum.ios:
         return BouncingScrollPhysics();
 
-      case ScrollPhysicsEnum.PLATFORM:
-      default:
+      case ScrollPhysicsEnum.platform:
+      case null:
         return null;
     }
   }
@@ -525,7 +522,7 @@ class Settings {
     this.multiDirection = false,
     this.anchor = 0,
     this.scrollDirection = Axis.vertical,
-    this.physicsType = ScrollPhysicsEnum.PLATFORM,
+    this.physicsType = ScrollPhysicsEnum.platform,
     this.overlay = false,
   });
 }
@@ -533,7 +530,9 @@ class Settings {
 
 
 class SingleChildScrollPage extends StatefulWidget {
-  static const String ROUTE = "/single-child";
+  static const String route = "/single-child";
+
+  const SingleChildScrollPage({super.key});
 
   @override
   _SingleChildScrollPageState createState() => _SingleChildScrollPageState();
